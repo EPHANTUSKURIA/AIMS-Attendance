@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background circle -->
+    <item>
+        <shape android:shape="ring"
+            android:innerRadiusRatio="3"
+            android:thicknessRatio="8"
+            android:useLevel="false">
+            <solid android:color="#D3D3D3"/>
+        </shape>
+    </item>
+    <!-- Progress circle -->
+    <item android:id="@android:id/progress">
+        <rotate
+            android:fromDegrees="270"
+            android:toDegrees="270">
+            <shape android:shape="ring"
+                android:innerRadiusRatio="3"
+                android:thicknessRatio="8"
+                android:useLevel="true">
+                <solid android:color="#0000FF"/> <!-- Blue for working hours -->
+            </shape>
+        </rotate>
+    </item>
+    <!-- Secondary progress circle -->
+    <item android:id="@android:id/secondaryProgress">
+        <rotate
+            android:fromDegrees="270"
+            android:toDegrees="270">
+            <shape android:shape="ring"
+                android:innerRadiusRatio="3"
+                android:thicknessRatio="8"
+                android:useLevel="true">
+                <solid android:color="#FF0000"/> <!-- Red for overtime -->
+            </shape>
+        </rotate>
+    </item>
+</layer-list>
+

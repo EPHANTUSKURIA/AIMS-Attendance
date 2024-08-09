@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<h1>Leave Report</h1>
+
+<h2>Leave Requests Summary</h2>
+<table id="leaveTable">
+    <thead>
+    <tr>
+        <th>Leave Type</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Comments</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Table rows will be inserted here dynamically -->
+    </tbody>
+</table>
+
+<h2>Leave Requests Chart</h2>
+<canvas id="leaveChart"></canvas>
+
+<script>
+    function generateTable(data) {
+        const tableBody = document.querySelector('#leaveTable tbody');
+        data.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${row.leaveType}</td>
+                <td>${row.startDate}</td>
+                <td>${row.endDate}</td>
+                <td>${row.comments}</td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    }
+
+    function generateChart(labels, data) {
+        const ctx = document.getElementById('leaveChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Leave Requests',
+                    data: data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (context.parsed) {
+                                    label += ': ' + context.parsed + ' requests';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Example data
+    const tableData = [
+        { leaveType: 'Sick Leave', startDate: '2024-01-01', endDate: '2024-01-05', comments: 'Fever' },
+        { leaveType: 'Vacation', startDate: '2024-02-10', endDate: '2024-02-20', comments: 'Family Trip' }
+    ];
+
+    const chartLabels = ['Sick Leave', 'Vacation', 'Personal Leave'];
+    const chartData = [10, 20, 5];
+
+    // Generate table and chart
+    generateTable(tableData);
+    generateChart(chartLabels, chartData);
+</script>
+</body>
+</html>

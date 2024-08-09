@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Aimsoft Attendance</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="notification_settings">Notification Settings</string>
+    <string name="enable_notifications">Enable Notifications</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+
+</resources>

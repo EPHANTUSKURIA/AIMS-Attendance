@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".ui.home.HomeFragment">
+
+
+    <ImageView
+        android:id="@+id/companyLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:src="@drawable/logo"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/logoAndGreetingCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="#FFFFFF"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/companyLogo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/seekbarCard">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profilePic"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/myprofile"
+                android:layout_marginEnd="16dp"
+                app:shapeAppearanceOverlay="@style/CircleShape" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="34dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/welcomeMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Good Morning"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#003366" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kuria Maina"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#003366" />
+
+                <TextView
+                    android:id="@+id/position"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Software Engineer"
+                    android:textSize="18sp"
+                    android:textColor="#003366"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/seekbarCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="#FFFFFF"
+        android:padding="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/logoAndGreetingCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/attendanceSummaryCard">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <!-- SeekBar Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/signOutTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Patch Out"
+                    android:textColor="#FF0000"
+                    android:textSize="18sp"
+                    android:layout_gravity="center_vertical" />
+
+                <SeekBar
+                    android:id="@+id/slider"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:max="1"
+                    android:progress="0"
+                    android:thumbTint="#FF0000"
+                    android:progressTint="#00FF00"
+                    android:progressTintMode="src_in"
+                    android:paddingTop="16dp"
+                     />
+
+                <TextView
+                    android:id="@+id/signInTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Patch In"
+                    android:textColor="#00FF00"
+                    android:textSize="18sp"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <!-- Circular Progress Bar Section -->
+            <com.example.aimsoftattendance.CustomCircularProgressBar
+                android:id="@+id/circularProgressBar"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                app:progressColor="@color/green"
+                app:markerColor="@color/green"
+                android:layout_centerInParent="true"
+                android:layout_margin="16dp"/>
+
+
+            <TextView
+                android:id="@+id/jobHoursLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Job Hours"
+                android:textSize="18sp"
+                android:textColor="#003366"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/attendanceSummaryCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="4dp"
+        android:layout_marginTop="24dp"
+        app:cardBackgroundColor="#E3F2FD"
+        android:padding="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/seekbarCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"> <!-- Increased padding -->
+
+            <TextView
+                android:id="@+id/attendanceSummaryTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today's Attendance Summary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#003366" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"> <!-- Increased margin top -->
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/signInTimeTextViewLabel"
+                        android:text="00:00 AM"
+                        android:textColor="#003366"
+                        android:textSize="16sp"
+                        android:paddingEnd="12dp"
+                        android:gravity="start"/> <!-- Ensure text aligns to start -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/signInTimeTextView"
+                        android:text="Patch In Time"
+                        android:textSize="16sp"
+                        android:textColor="#003366"
+                        android:gravity="end"/> <!-- Ensure text aligns to end -->
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/signOutTimeTextViewLabel"
+                        android:text="00:00 PM"
+                        android:textColor="#003366"
+                        android:textSize="16sp"
+                        android:paddingEnd="12dp"
+                        android:gravity="start"/> <!-- Ensure text aligns to start -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/signOutTimeTextView"
+                        android:text="Patch Out Time"
+                        android:textSize="16sp"
+                        android:textColor="#003366"
+                        android:gravity="end"/> <!-- Ensure text aligns to end -->
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/jobHoursTextViewLabel"
+                        android:text="0 Hrs"
+                        android:textColor="#003366"
+                        android:textSize="16sp"
+                        android:paddingEnd="12dp"
+                        android:gravity="start"/> <!-- Ensure text aligns to start -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/jobHoursTextView"
+                        android:text="Job Hours"
+                        android:textSize="16sp"
+                        android:textColor="#003366"
+                        android:gravity="end"/> <!-- Ensure text aligns to end -->
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/overtimeHoursTextViewLabel"
+                        android:text="0 Hours"
+                        android:textColor="#003366"
+                        android:textSize="16sp"
+                        android:paddingEnd="12dp"
+                        android:gravity="start"/> <!-- Ensure text aligns to start -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/overtimeHoursTextView"
+                        android:text="Overtime Hours"
+                        android:textSize="16sp"
+                        android:textColor="#003366"
+                        android:gravity="end"/> <!-- Ensure text aligns to end -->
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+

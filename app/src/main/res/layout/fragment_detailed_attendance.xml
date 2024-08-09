@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.aimsoftattendance.DetailedAttendanceViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:background="@color/background">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewDetailed"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="8dp"
+            android:background="@color/white"/>
+
+        <WebView
+            android:id="@+id/pieChartWebView"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/recyclerViewDetailed"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone"/> <!-- Set visibility to gone initially -->
+
+        <Button
+            android:id="@+id/printButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Print"
+            android:textColor="@android:color/white"
+            android:background="@color/dark_blue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="16dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginEnd="16dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
