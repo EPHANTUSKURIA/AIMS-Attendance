@@ -1,20 +1,32 @@
 package com.example.aimsoftattendance.ui.home
 
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import androidx.navigation.fragment.findNavController
 import com.example.aimsoftattendance.R
-import com.example.aimsoftattendance.CustomCircularProgressBar // Import your custom progress bar class
+import com.example.aimsoftattendance.CustomCircularProgressBar
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.Task
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,8 +37,9 @@ class HomeFragment : Fragment() {
     private lateinit var totalHoursTextView: TextView
     private lateinit var overtimeTextView: TextView
     private lateinit var seekBar: SeekBar
-    private lateinit var circularProgressBar: CustomCircularProgressBar // Use your custom type
+    private lateinit var circularProgressBar: CustomCircularProgressBar
     private lateinit var profilePic: ShapeableImageView
+    private lateinit var attendanceSummaryTextView: TextView // Add this line
 
     private var signInTime: Long = 0
     private var signOutTime: Long = 0
@@ -35,10 +48,19 @@ class HomeFragment : Fragment() {
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = object : Runnable {
         override fun run() {
-            updateCircularProgressBar()
+            if (isSignedIn) {
+                updateCircularProgressBar()
+            }
             handler.postDelayed(this, 1000) // Update every second
         }
     }
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    // Geofence location (latitude, longitude) and radius in meters
+    private val geofenceLat = -1.3031722060127642
+    private val geofenceLng = 36.8101425299103
+    private val geofenceRadius = 50 // 50 meters radius
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,11 +74,19 @@ class HomeFragment : Fragment() {
         totalHoursTextView = view.findViewById(R.id.jobHoursTextViewLabel)
         overtimeTextView = view.findViewById(R.id.overtimeHoursTextViewLabel)
         seekBar = view.findViewById(R.id.slider)
-        circularProgressBar = view.findViewById(R.id.circularProgressBar) // Initialize as CustomCircularProgressBar
+        circularProgressBar = view.findViewById(R.id.circularProgressBar)
         profilePic = view.findViewById(R.id.profilePic)
+        attendanceSummaryTextView = view.findViewById(R.id.attendanceSummaryTitle)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         setupSeekBar()
         setupProfilePicClick()
+        setupAttendanceSummaryClick()
+        // Set up the click listener
+        attendanceSummaryTextView.setOnClickListener {
+            navigateToAttendanceHistory()
+        }
         return view
     }
 
@@ -64,25 +94,97 @@ class HomeFragment : Fragment() {
         seekBar.max = 1
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if (progress == 1 && !isSignedIn) {
-                    signIn()
-                    seekBar?.progress = 1 // Keep SeekBar at the right position
-                    circularProgressBar.showMarker(true)
-                } else if (progress == 0 && isSignedIn) {
-                    signOut()
-                    seekBar?.progress = 0 // Move SeekBar back to the left position
-                    circularProgressBar.showMarker(false)
-                }
+                circularProgressBar.showMarker(progress == 1)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                when (seekBar?.progress) {
+                    1 -> if (!isSignedIn) checkLocationServices()
+                    0 -> if (isSignedIn) signOut()
+                }
+            }
         })
     }
 
     private fun setupProfilePicClick() {
         profilePic.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+        }
+    }
+
+    private fun setupAttendanceSummaryClick() {
+        attendanceSummaryTextView.setOnClickListener {
+            // Handle the click event here
+            Toast.makeText(requireContext(), "Attendance Summary Clicked", Toast.LENGTH_SHORT).show()
+            // You can navigate to a different fragment or activity if needed
+            // findNavController().navigate(R.id.action_homeFragment_to_attendanceSummaryFragment)
+        }
+    }
+
+    private fun checkLocationServices() {
+        val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Toast.makeText(requireContext(), "Please turn on your location services", Toast.LENGTH_LONG).show()
+            startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+        } else {
+            getCurrentLocation()
+        }
+    }
+
+    private fun getCurrentLocation() {
+        if (ContextCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    checkGeofence(location)
+                } else {
+                    Toast.makeText(requireContext(), "Unable to get your location. Try again later.", Toast.LENGTH_LONG).show()
+                }
+            }.addOnFailureListener { exception ->
+                Toast.makeText(requireContext(), "Failed to get location: ${exception.message}", Toast.LENGTH_LONG).show()
+            }
+        } else {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getCurrentLocation()
+            } else {
+                Toast.makeText(requireContext(), "Location permission is required to use this feature.", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+    }
+
+    private fun checkGeofence(location: Location) {
+        val targetLocation = Location("").apply {
+            latitude = geofenceLat
+            longitude = geofenceLng
+        }
+        val distance = location.distanceTo(targetLocation)
+
+        if (distance <= geofenceRadius) {
+            signIn()
+            seekBar.progress = 1
+        } else {
+            Toast.makeText(requireContext(), "You are not within the allowed area to sign in.", Toast.LENGTH_LONG).show()
+            seekBar.progress = 0
         }
     }
 
@@ -114,16 +216,10 @@ class HomeFragment : Fragment() {
     private fun updateCircularProgressBar() {
         val currentTime = System.currentTimeMillis()
         val elapsedTime = (currentTime - signInTime) / 1000 // Elapsed time in seconds
-        val elapsedHours = elapsedTime / 3600
         val progress = ((elapsedTime % 43200) * 100 / 43200).toFloat() // 12 hours = 43200 seconds
 
-        // Set the progress on the CustomCircularProgressBar
         circularProgressBar.setProgress(progress)
-
-        // Determine which color to use
-        val progressColor = if (elapsedHours >= 9) Color.BLUE else Color.GREEN
-
-        // Set the color of the progress
+        val progressColor = if (elapsedTime / 3600 >= 9) Color.BLUE else Color.GREEN
         circularProgressBar.setProgressColor(progressColor)
     }
 
@@ -143,5 +239,9 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         handler.removeCallbacks(runnable)
     }
+    private fun navigateToAttendanceHistory() {
+        findNavController().navigate(R.id.action_homeFragment_to_attendanceHistoryFragment)
+    }
 }
+
 

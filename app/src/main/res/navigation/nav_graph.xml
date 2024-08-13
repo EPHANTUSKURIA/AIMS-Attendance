@@ -13,6 +13,11 @@
         <action
             android:id="@+id/action_homeFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+
+        <!-- Action to navigate to AttendanceHistoryFragment -->
+        <action
+            android:id="@+id/action_homeFragment_to_attendanceHistoryFragment"
+            app:destination="@id/attendanceHistoryFragment" />
     </fragment>
 
     <fragment
@@ -36,7 +41,18 @@
             app:destination="@id/profileFragment" />
     </fragment>
 
+    <!-- AttendanceHistoryFragment -->
+    <fragment
+        android:id="@+id/attendanceHistoryFragment"
+        android:name="com.example.aimsoftattendance.AttendanceHistoryFragment"
+        android:label="Attendance History"
+        tools:layout="@layout/fragment_attendance_history">
+
+        <!-- Action to navigate back to HomeFragment -->
+        <action
+            android:id="@+id/action_attendanceHistoryFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 
 </navigation>
-
 

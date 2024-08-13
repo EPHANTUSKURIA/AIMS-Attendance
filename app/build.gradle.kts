@@ -55,6 +55,7 @@ dependencies {
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0") // MPAndroidChart dependency
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
     implementation("androidx.fragment:fragment-ktx:1.8.2")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation(libs.androidx.navigation.common)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.navigation.fragment)

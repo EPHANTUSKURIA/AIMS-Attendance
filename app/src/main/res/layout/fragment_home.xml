@@ -8,7 +8,7 @@
     android:padding="16dp"
     tools:context=".ui.home.HomeFragment">
 
-
+    <!-- Company Logo -->
     <ImageView
         android:id="@+id/companyLogo"
         android:layout_width="wrap_content"
@@ -20,6 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5" />
 
+    <!-- Logo and Greeting Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/logoAndGreetingCard"
         android:layout_width="match_parent"
@@ -84,6 +85,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- SeekBar Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/seekbarCard"
         android:layout_width="match_parent"
@@ -104,7 +106,6 @@
             android:orientation="vertical"
             android:gravity="center">
 
-            <!-- SeekBar Section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,8 +134,7 @@
                     android:thumbTint="#FF0000"
                     android:progressTint="#00FF00"
                     android:progressTintMode="src_in"
-                    android:paddingTop="16dp"
-                     />
+                    android:paddingTop="16dp" />
 
                 <TextView
                     android:id="@+id/signInTextView"
@@ -146,7 +146,6 @@
                     android:layout_gravity="center_vertical" />
             </LinearLayout>
 
-            <!-- Circular Progress Bar Section -->
             <com.example.aimsoftattendance.CustomCircularProgressBar
                 android:id="@+id/circularProgressBar"
                 android:layout_width="150dp"
@@ -154,8 +153,7 @@
                 app:progressColor="@color/green"
                 app:markerColor="@color/green"
                 android:layout_centerInParent="true"
-                android:layout_margin="16dp"/>
-
+                android:layout_margin="16dp" />
 
             <TextView
                 android:id="@+id/jobHoursLabel"
@@ -168,6 +166,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- Attendance Summary Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/attendanceSummaryCard"
         android:layout_width="match_parent"
@@ -245,7 +244,6 @@
                         android:textColor="#003366"
                         android:gravity="end"/> <!-- Ensure text aligns to end -->
                 </TableRow>
-
                 <TableRow>
                     <TextView
                         android:layout_width="0dp"
@@ -290,13 +288,12 @@
                         android:gravity="end"/> <!-- Ensure text aligns to end -->
                 </TableRow>
             </TableLayout>
-        </LinearLayout>
 
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 
