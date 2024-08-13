@@ -1,8 +1,11 @@
-package com.example.aimsoftattendance
+package com.example.aimsoftattendance.ui.history.viewmodelhistory
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.aimsoftattendance.AttendanceRecord
+import com.example.aimsoftattendance.DetailedAttendanceRecord
+import com.example.aimsoftattendance.WeeklySummary
 import kotlin.collections.sumOf
 
 

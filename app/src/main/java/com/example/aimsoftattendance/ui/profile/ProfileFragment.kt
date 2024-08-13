@@ -1,11 +1,11 @@
-package com.example.aimsoftattendance
+package com.example.aimsoftattendance.ui.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import com.example.aimsoftattendance.R
 import com.example.aimsoftattendance.databinding.ProfileFragmentBinding
 
 class ProfileFragment : Fragment() {
@@ -24,6 +24,9 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Bind the fragment instance to the layout
+        binding.handler = this
+
         // Set click listeners for the buttons using the corresponding methods
         binding.buttonEditProfile.setOnClickListener {
             onEditProfile()
@@ -35,15 +38,19 @@ class ProfileFragment : Fragment() {
     }
 
     // Function to handle the edit profile action
-    private fun onEditProfile() {
-        // Navigate to the Edit Profile screen
-        findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
+    fun onEditProfile() {
+        // Navigate to the Edit Profile screen using FragmentManager
+        val fragment = EditProfileFragment()
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     // Function to handle the cancel action
-    private fun onCancel() {
+    fun onCancel() {
         // Navigate back or perform another action
-        findNavController().navigateUp()
+        parentFragmentManager.popBackStack()
     }
 
     override fun onDestroyView() {
@@ -51,4 +58,5 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 }
+
 

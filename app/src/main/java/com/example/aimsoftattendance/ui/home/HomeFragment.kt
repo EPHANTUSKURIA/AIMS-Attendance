@@ -20,9 +20,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import android.Manifest.permission.ACCESS_FINE_LOCATION
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.FragmentManager
 import com.example.aimsoftattendance.R
 import com.example.aimsoftattendance.CustomCircularProgressBar
+import com.example.aimsoftattendance.ui.history.AttendanceHistoryFragment
+import com.example.aimsoftattendance.ui.profile.ProfileFragment
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -39,7 +41,7 @@ class HomeFragment : Fragment() {
     private lateinit var seekBar: SeekBar
     private lateinit var circularProgressBar: CustomCircularProgressBar
     private lateinit var profilePic: ShapeableImageView
-    private lateinit var attendanceSummaryTextView: TextView // Add this line
+    private lateinit var attendanceSummaryTextView: TextView
 
     private var signInTime: Long = 0
     private var signOutTime: Long = 0
@@ -71,8 +73,8 @@ class HomeFragment : Fragment() {
         // Initialize UI elements
         signInTimeTextView = view.findViewById(R.id.signInTimeTextViewLabel)
         signOutTimeTextView = view.findViewById(R.id.signOutTimeTextViewLabel)
-        totalHoursTextView = view.findViewById(R.id.jobHoursTextViewLabel)
-        overtimeTextView = view.findViewById(R.id.overtimeHoursTextViewLabel)
+        totalHoursTextView = view.findViewById(R.id.totalHoursTextViewLabel)
+        overtimeTextView = view.findViewById(R.id.overtimeTextViewLabel)
         seekBar = view.findViewById(R.id.slider)
         circularProgressBar = view.findViewById(R.id.circularProgressBar)
         profilePic = view.findViewById(R.id.profilePic)
@@ -83,10 +85,6 @@ class HomeFragment : Fragment() {
         setupSeekBar()
         setupProfilePicClick()
         setupAttendanceSummaryClick()
-        // Set up the click listener
-        attendanceSummaryTextView.setOnClickListener {
-            navigateToAttendanceHistory()
-        }
         return view
     }
 
@@ -110,16 +108,23 @@ class HomeFragment : Fragment() {
 
     private fun setupProfilePicClick() {
         profilePic.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+            // Navigate to ProfileFragment when profilePic is clicked
+            val fragment = ProfileFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
         }
     }
 
     private fun setupAttendanceSummaryClick() {
         attendanceSummaryTextView.setOnClickListener {
-            // Handle the click event here
-            Toast.makeText(requireContext(), "Attendance Summary Clicked", Toast.LENGTH_SHORT).show()
-            // You can navigate to a different fragment or activity if needed
-            // findNavController().navigate(R.id.action_homeFragment_to_attendanceSummaryFragment)
+            // Navigate to AttendanceHistoryFragment when attendanceSummaryTextView is clicked
+            val fragment = AttendanceHistoryFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
         }
     }
 
@@ -239,9 +244,7 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         handler.removeCallbacks(runnable)
     }
-    private fun navigateToAttendanceHistory() {
-        findNavController().navigate(R.id.action_homeFragment_to_attendanceHistoryFragment)
-    }
 }
+
 
 

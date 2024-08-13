@@ -1,4 +1,4 @@
-package com.example.aimsoftattendance
+package com.example.aimsoftattendance.ui.history
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.aimsoftattendance.databinding.FragmentDetailedAttendanceBinding
+import com.example.aimsoftattendance.ui.history.Adapter.FragDetailedAttendanceAdapter
+import com.example.aimsoftattendance.ui.history.viewmodelhistory.DetailedAttendanceViewModel
 
 class DetailedAttendanceFragment : Fragment() {
 

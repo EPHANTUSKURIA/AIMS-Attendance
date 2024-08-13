@@ -1,8 +1,9 @@
-package com.example.aimsoftattendance
+package com.example.aimsoftattendance.ui.history.viewmodelhistory
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.aimsoftattendance.AttendanceRecord
 
 class AttendanceHistoryViewModel : ViewModel() {
 

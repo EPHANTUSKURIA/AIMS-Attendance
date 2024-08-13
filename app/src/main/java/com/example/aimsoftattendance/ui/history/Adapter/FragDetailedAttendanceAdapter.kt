@@ -1,9 +1,10 @@
-package com.example.aimsoftattendance
+package com.example.aimsoftattendance.ui.history.Adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.aimsoftattendance.AttendanceRecord
 import com.example.aimsoftattendance.databinding.ItemAttendanceRecordBinding
 
 class FragDetailedAttendanceAdapter : RecyclerView.Adapter<FragDetailedAttendanceAdapter.ViewHolder>() {
