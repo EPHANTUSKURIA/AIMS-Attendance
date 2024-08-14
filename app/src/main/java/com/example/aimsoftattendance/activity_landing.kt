@@ -1,6 +1,5 @@
 package com.example.aimsoftattendance
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -11,7 +10,6 @@ import com.example.aimsoftattendance.ui.auth.LoginFragment
 import com.example.aimsoftattendance.ui.home.HomeFragment
 
 class LandingActivity : AppCompatActivity(),
-
     LoginFragment.OnLoginFragmentInteractionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +31,8 @@ class LandingActivity : AppCompatActivity(),
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .commit()
                 }
+                // Hide the logo after the animation ends
+                logoImage.visibility = ImageView.GONE
             }
 
             override fun onAnimationRepeat(animation: Animation) {}
@@ -40,6 +40,9 @@ class LandingActivity : AppCompatActivity(),
     }
 
     override fun onLoginSuccess() {
+        // Hide the logo when transitioning to the HomeFragment
+        val logoImage: ImageView = findViewById(R.id.logoImage)
+        logoImage.visibility = ImageView.GONE
 
         val homeFragment = HomeFragment()
         supportFragmentManager.beginTransaction()
